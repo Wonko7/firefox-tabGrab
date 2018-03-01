@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "tabGrab",
+  "version": "1.0",
+
+  "description": "Grabs tabs",
+
+  "icons": {
+    "48": "icons/binoculars.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/tabGrab.js"]
+    }
+  ]
+}
