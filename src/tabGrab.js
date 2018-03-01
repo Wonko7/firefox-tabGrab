@@ -25,15 +25,11 @@ function grab(search, count) {
   })
 }
 
-//   browser.runtime.onMessage.addListener((message) => {
-//     if (message.command === "beastify") {
-//       insertBeast(message.beastURL);
-//     } else if (message.command === "reset") {
-//       removeExistingBeasts();
-//     }
+browser.commands.onCommand.addListener((command) => {
+  const currTab   = getCurrent()
+  const direction = command === 'grab-down' ? 1 : -1
 
-console.log('heyyyyyy lmao 2')
-
-grab('slashdot', 0)
-  .then(x => console.log('yes, got x:', x))
-  .resolve()
+  currTab
+    .then(t    => browser.tabs.sendMessage(t.id, { command: 'get-search' }))
+    .then(resp => grab(resp, 0))
+})

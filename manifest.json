@@ -17,5 +17,27 @@
 
   "background": {
     "scripts": ["src/tabGrab.js"]
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/grabUi.js"]
+    }
+  ],
+
+  "commands": {
+    "grab-up": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+U"
+      },
+      "description": "grab up"
+    },
+    "grab-down": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+D"
+      },
+      "description": "grab down"
+    }
   }
 }
