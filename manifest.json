@@ -9,10 +9,13 @@
     "48": "icons/binoculars.png"
   },
 
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["src/tabGrab.js"]
-    }
-  ]
+  "permissions": [
+    "tabs",
+    "notifications",
+    "activeTab"
+  ],
+
+  "background": {
+    "scripts": ["src/tabGrab.js"]
+  }
 }
