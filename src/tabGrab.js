@@ -7,14 +7,17 @@ const getCurrent = () =>  browser.tabs.query({ currentWindow: true, active: true
 
 // grab all tabs matching search string and group them after current tab:
 function grab(search, countOrDirectionUnused) {
-  let   tabs    = listTabs()
-  const re      = new RegExp(search.replace(/\\/, '\\\\'))
+  const tabs    = listTabs()
+  const re      = new RegExp(search.replace(/\\/, '\\\\'), 'i') // need to test this
   const pred    = tab => (tab.title.match(re) || tab.url.match(re))
   const currTab = getCurrent()
 
   Promise.all([currTab, tabs]).then(([currTab, tabs]) => {
-    const toMove  = tabs.filter(pred).map(t => t.id)
-    browser.tabs.move(toMove, { index: currTab.index })
+    const toMove       = tabs.filter(pred)
+    const nbTabsBefore = toMove.filter(t => t.index < currTab.index).length
+
+    return browser.tabs.move(toMove.map(t => t.id), { index: currTab.index })
+      .then(() => browser.tabs.move(currTab.id, { index: currTab.index - nbTabsBefore }))
   })
 }
 
