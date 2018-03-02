@@ -9,7 +9,7 @@ const getCurrent = () =>  browser.tabs.query({ currentWindow: true, active: true
 
 // grab all tabs matching search string and group them after current tab:
 const grab = async (search, countOrDirectionUnused) => {
-  const re                 = new RegExp(search.replace(/\\/, '\\\\'), 'i') // need to test this
+  const re                 = new RegExp(search.replace(/\\/, '\\\\'), 'i') // need to test this, maybe seperate by \s? "slash dot" => title.match(slash).match(dot)?
   const rePredicate        = tab => (tab.title.match(re) || tab.url.match(re))
   const [allTabs, currTab] = await Promise.all([listTabs(), getCurrent()])
   const tabsToMove         = allTabs.filter(rePredicate)
