@@ -4,7 +4,7 @@
 const listTabs = () => browser.tabs.query({ currentWindow: true })
   .then(tabs => tabs.filter(t => !t.pinned))
 
-const getCurrent = () => browser.tabs.query({ currentWindow: true, active: true })
+const getCurrentTab = () => browser.tabs.query({ currentWindow: true, active: true })
   .then(tabs => browser.tabs.get(tabs[0].id))
 
 // grab all tabs matching search string and group them after current tab:
@@ -19,12 +19,10 @@ const grab = async (currTab, search, countOrDirectionUnused) => {
   await browser.tabs.move(currTab.id, { index: currTab.index - nbTabsBeforeCurr })
 }
 
-browser.commands.onCommand.addListener((command) => {
-  const currTab   = getCurrent()
+browser.commands.onCommand.addListener(async (command) => {
   const direction = command === 'grab-down' ? 1 : -1 // for now just grabs all.
+  const currTab   = await getCurrentTab()
+  const response  = await browser.tabs.sendMessage(currTab.id, { command: 'get-search' })
 
-  return currTab
-    .then(t => [t, browser.tabs.sendMessage(t.id, { command: 'get-search' })])
-    .then(Promise.all.bind(Promise))
-    .then(([currTab, response]) => grab(currTab, response, direction))
+  await grab(currTab, response, direction)
 })
