@@ -26,13 +26,19 @@ const grab = async (currTab, tabsToMove) => {
   await browser.tabs.move(currTab.id, { index: currTab.index - nbTabsBeforeCurr })
 }
 
-const openInEmacs = tabs => {
+const openInEmacs = async (tabsP) => {
+  console.log("tabs:")
+  const tabs = await tabsP
+  // var lol = "org-protocol://yolobolo?lol=haha"
   console.log(tabs)
-  for (t in tabs) {
-    console.log(t.title + " vs " + t.url)
-  }
+  // ll = tabs.reduce((acc, t) => acc +"&title=" + uencodeURIComponent(t.title) + "&url=" + uencodeURIComponent(t.url) " ", "")
 
-  location.href = "org-protocol://yolobolo://oaeu/aoeu/aoeu/aoeu/t2/t3"
+  console.log("wtf?")
+  all = tabs.reduce((acc, t) => acc +"&title=" + encodeURIComponent(t.title) + "&url=" + encodeURIComponent(t.url),
+                    "org-protocol://yolobolo?lol=haha")
+
+  console.log("wtf2", all)
+  location.href = all
 }
 
 browser.commands.onCommand.addListener(async (command) => {
@@ -42,5 +48,5 @@ browser.commands.onCommand.addListener(async (command) => {
   const tabs      = filterTabs(response)
 
   //await grab(currTab, tabs)
-  await openInEmacs(currTab, tabs)
+  await openInEmacs(tabs)
 })
