@@ -16,8 +16,6 @@ const filterTabs = async (search) => {
   return filtered
 }
 
-//const send_to_emacs = async (tab) => location.href = 'org-protocol://tabs  ?template=Ql&ref=' + encodeURIComponent(t.url) + '&title=' + encodeURIComponent(t.title)
-
 // grab all tabs matching search string and group them after current tab:
 const grab = async (currTab, tabsToMove) => {
   const nbTabsBeforeCurr = tabsToMove.filter(t => t.index < currTab.index).length
@@ -26,27 +24,24 @@ const grab = async (currTab, tabsToMove) => {
   await browser.tabs.move(currTab.id, { index: currTab.index - nbTabsBeforeCurr })
 }
 
-const openInEmacs = async (tabsP) => {
+const  = async (tabsP) => {
   console.log("tabs:")
   const tabs = await tabsP
-  // var lol = "org-protocol://yolobolo?lol=haha"
-  console.log(tabs)
-  // ll = tabs.reduce((acc, t) => acc +"&title=" + uencodeURIComponent(t.title) + "&url=" + uencodeURIComponent(t.url) " ", "")
-
-  console.log("wtf?")
   all = tabs.reduce((acc, t) => acc +"&title=" + encodeURIComponent(t.title) + "&url=" + encodeURIComponent(t.url),
-                    "org-protocol://yolobolo?lol=haha")
-
-  console.log("wtf2", all)
+                    "org-protocol://yolobolo?session=haha")
   location.href = all
 }
 
 browser.commands.onCommand.addListener(async (command) => {
-  const direction = command === 'grab-down' ? 1 : -1 // for now just grabs all.
   const currTab   = await getCurrentTab()
-  const response  = await browser.tabs.sendMessage(currTab.id, { command: 'get-search' })
-  const tabs      = filterTabs(response)
+  if (command == "grab") {
 
-  //await grab(currTab, tabs)
-  await openInEmacs(tabs)
+    const response  = await browser.tabs.sendMessage(currTab.id, { command: 'get-search' })
+    const tabs      = filterTabs(response)
+
+    await grab(currTab, tabs)
+  } else {
+    const tabs      = listTabs()
+    await sendToEmacs(tabs)
+  }
 })
