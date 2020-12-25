@@ -2,3 +2,6 @@
 
 Needs security.external_protocol_requires_permission to false in about:config & org-protocol to be setup.
 ctrl+shift+u sends browsing session to emacs.
+
+* building
+web-ext build --overwrite-dest
