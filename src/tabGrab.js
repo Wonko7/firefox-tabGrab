@@ -25,9 +25,8 @@ const grab = async (currTab, tabsToMove) => {
 }
 
 const sendToEmacs = async (tabsP) => {
-  console.log("tabs:")
   const tabs = await tabsP
-  all = tabs.reduce((acc, t) => acc +"&title=" + encodeURIComponent(t.title) + "&url=" + encodeURIComponent(t.url),
+  all = tabs.reduce((acc, t) => acc + "&title=" + encodeURIComponent(t.title) + "&url=" + encodeURIComponent(t.url),
                     "org-protocol://yolobolo?session=haha")
   location.href = all
 }
