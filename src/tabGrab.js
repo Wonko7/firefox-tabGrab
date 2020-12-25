@@ -24,7 +24,7 @@ const grab = async (currTab, tabsToMove) => {
   await browser.tabs.move(currTab.id, { index: currTab.index - nbTabsBeforeCurr })
 }
 
-const  = async (tabsP) => {
+const sendToEmacs = async (tabsP) => {
   console.log("tabs:")
   const tabs = await tabsP
   all = tabs.reduce((acc, t) => acc +"&title=" + encodeURIComponent(t.title) + "&url=" + encodeURIComponent(t.url),
